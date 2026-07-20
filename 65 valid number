@@ -1,0 +1,28 @@
+class Solution {
+    public boolean isNumber(String s) {
+        boolean seenDigit = false, seenDot = false, seenE = false;
+        
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            
+            if (Character.isDigit(c)) {
+                seenDigit = true;
+            } else if (c == '+' || c == '-') {
+                // Signs can only appear at the start, or immediately after an exponent 'e/E'
+                if (i > 0 && s.charAt(i - 1) != 'e' && s.charAt(i - 1) != 'E') return false;
+            } else if (c == '.') {
+                // A dot is invalid if we already saw a dot or an exponent 'e/E'
+                if (seenDot || seenE) return false;
+                seenDot = true;
+            } else if (c == 'e' || c == 'E') {
+                // An exponent is invalid if we already saw one, or if no digits appeared before it
+                if (seenE || !seenDigit) return false;
+                seenE = true;
+                seenDigit = false; // Reset to ensure an integer follows the exponent
+            } else {
+                return false; // Any other character (like letters 'abc') is invalid
+            }
+        }
+        return seenDigit; // Must end with at least one valid digit sequence
+    }
+}
