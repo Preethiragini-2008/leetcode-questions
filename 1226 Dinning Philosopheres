@@ -1,0 +1,33 @@
+import java.util.concurrent.locks.ReentrantLock;
+
+class DiningPhilosophers {
+    private final ReentrantLock[] forks = new ReentrantLock[5];
+
+    public DiningPhilosophers() {
+        for (int i = 0; i < 5; i++) forks[i] = new ReentrantLock();
+    }
+
+    public void wantsToEat(int id, Runnable pickL, Runnable pickR, Runnable eat, Runnable putL, Runnable putR) {
+        // Find smaller and larger fork ID to prevent deadlock
+        int f1 = Math.min(id, (id + 1) % 5);
+        int f2 = Math.max(id, (id + 1) % 5);
+
+        // Lock in ascending order
+        forks[f1].lock();
+        forks[f2].lock();
+
+        // Run pick callbacks
+        if (f1 == id) { pickL.run(); pickR.run(); } 
+        else          { pickR.run(); pickL.run(); }
+
+        eat.run(); // Eat spaghetti
+
+        // Run put callbacks
+        if (f1 == id) { putR.run(); putL.run(); } 
+        else          { putL.run(); putR.run(); }
+
+        // Unlock both
+        forks[f2].unlock();
+        forks[f1].unlock();
+    }
+}
