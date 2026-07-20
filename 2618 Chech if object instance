@@ -1,0 +1,14 @@
+function checkIfInstanceOf(obj, targetClass) {
+    if (obj === null || obj === undefined || typeof targetClass !== 'function') return false;
+    
+    // Get the initial prototype (handles primitive wrappers automatically)
+    let proto = Object.getPrototypeOf(obj);
+    
+    // Traverse up the prototype chain
+    while (proto !== null) {
+        if (proto === targetClass.prototype) return true;
+        proto = Object.getPrototypeOf(proto);
+    }
+    
+    return false;
+}
