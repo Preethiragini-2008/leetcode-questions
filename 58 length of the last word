@@ -1,0 +1,13 @@
+class Solution {
+    public int lengthOfLastWord(String s) {
+
+        // Remove trailing spaces
+        s = s.trim();
+
+        // Find the last space
+        int lastSpace = s.lastIndexOf(' ');
+
+        // Length of last word
+        return s.length() - lastSpace - 1;
+    }
+}
