@@ -1,0 +1,13 @@
+class Solution {
+    public String[] findWords(String[] words) {
+        String r1 = "qwertyuiop", r2 = "asdfghjkl", r3 = "zxcvbnm";
+        List<String> list = new ArrayList<>();
+
+        for (String w : words) {
+            String s = w.toLowerCase();
+            if (s.matches("[" + r1 + "]+") || s.matches("[" + r2 + "]+") || s.matches("[" + r3 + "]+"))
+                list.add(w);
+        }
+        return list.toArray(new String[0]);
+    }
+}
