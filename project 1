@@ -1,0 +1,96 @@
+import java.io.*;
+import java.util.*;
+
+public class StudentMarks {
+    static final String FILE = "students.txt";
+    static Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        int ch;
+        do {
+            System.out.println("\n1.Add 2.View 3.Search 4.Update 5.Delete 6.Exit");
+            System.out.print("Choice: ");
+            ch = sc.nextInt();
+
+            switch (ch) {
+                case 1 -> add();
+                case 2 -> view();
+                case 3 -> search();
+                case 4 -> update();
+                case 5 -> delete();
+            }
+        } while (ch != 6);
+    }
+
+    static void add() throws IOException {
+        sc.nextLine();
+        System.out.print("Roll,Name,Marks1,Marks2,Marks3: ");
+        String record = sc.nextLine();
+        FileWriter fw = new FileWriter(FILE, true);
+        fw.write(record + "\n");
+        fw.close();
+        System.out.println("Added!");
+    }
+
+    static void view() throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(FILE));
+        String line;
+        while ((line = br.readLine()) != null) System.out.println(line);
+        br.close();
+    }
+
+    static void search() throws IOException {
+        System.out.print("Enter Roll No: ");
+        String roll = sc.next();
+        BufferedReader br = new BufferedReader(new FileReader(FILE));
+        String line;
+        boolean found = false;
+        while ((line = br.readLine()) != null) {
+            if (line.startsWith(roll + ",")) {
+                System.out.println(line);
+                found = true;
+            }
+        }
+        if (!found) System.out.println("Not found!");
+        br.close();
+    }
+
+    static void update() throws IOException {
+        System.out.print("Enter Roll No to update: ");
+        String roll = sc.next();
+        sc.nextLine();
+        System.out.print("Enter new record (Roll,Name,M1,M2,M3): ");
+        String newRecord = sc.nextLine();
+
+        List<String> lines = new ArrayList<>();
+        BufferedReader br = new BufferedReader(new FileReader(FILE));
+        String line;
+        while ((line = br.readLine()) != null) {
+            lines.add(line.startsWith(roll + ",") ? newRecord : line);
+        }
+        br.close();
+
+        FileWriter fw = new FileWriter(FILE, false);
+        for (String l : lines) fw.write(l + "\n");
+        fw.close();
+        System.out.println("Updated!");
+    }
+
+    static void delete() throws IOException {
+        System.out.print("Enter Roll No to delete: ");
+        String roll = sc.next();
+
+        List<String> lines = new ArrayList<>();
+        BufferedReader br = new BufferedReader(new FileReader(FILE));
+        String line;
+        while ((line = br.readLine()) != null) {
+            if (!line.startsWith(roll + ",")) lines.add(line);
+        }
+        br.close();
+
+        FileWriter fw = new FileWriter(FILE, false);
+        for (String l : lines) fw.write(l + "\n");
+        fw.close();
+        System.out.println("Deleted!");
+    }
+}
