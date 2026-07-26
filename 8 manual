@@ -1,0 +1,152 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class StudentRegistration extends JFrame implements ActionListener {
+
+    JTextField usnField, nameField;
+    JComboBox<String> branchBox;
+    JRadioButton maleBtn, femaleBtn;
+    ButtonGroup genderGroup;
+    JCheckBox javaBox, pythonBox;
+    JButton submitBtn, clearBtn;
+    JTextArea displayArea;
+
+    public StudentRegistration() {
+
+        // Frame Settings
+        setTitle("Student Registration Form");
+        setLayout(new GridLayout(8, 2, 10, 10));
+
+        // USN
+        add(new JLabel("USN :"));
+        usnField = new JTextField();
+        add(usnField);
+
+        // Name
+        add(new JLabel("Name :"));
+        nameField = new JTextField();
+        add(nameField);
+
+        // Branch
+        add(new JLabel("Branch :"));
+        String[] branches = {
+            "Computer Science",
+            "Electronics",
+            "Mechanical",
+            "Civil"
+        };
+        branchBox = new JComboBox<>(branches);
+        add(branchBox);
+
+        // Gender
+        add(new JLabel("Gender :"));
+        JPanel genderPanel = new JPanel();
+
+        maleBtn = new JRadioButton("Male");
+        femaleBtn = new JRadioButton("Female");
+
+        genderGroup = new ButtonGroup();
+        genderGroup.add(maleBtn);
+        genderGroup.add(femaleBtn);
+
+        genderPanel.add(maleBtn);
+        genderPanel.add(femaleBtn);
+
+        add(genderPanel);
+
+        // Skills
+        add(new JLabel("Skills :"));
+        JPanel skillPanel = new JPanel();
+
+        javaBox = new JCheckBox("Java");
+        pythonBox = new JCheckBox("Python");
+
+        skillPanel.add(javaBox);
+        skillPanel.add(pythonBox);
+
+        add(skillPanel);
+
+        // Buttons
+        submitBtn = new JButton("Submit");
+        clearBtn = new JButton("Clear");
+
+        add(submitBtn);
+        add(clearBtn);
+
+        // Display Area
+        add(new JLabel("Student Details :"));
+        displayArea = new JTextArea();
+        add(new JScrollPane(displayArea));
+
+        // Action Listeners
+        submitBtn.addActionListener(this);
+        clearBtn.addActionListener(this);
+
+        // Frame Properties
+        setSize(500, 500);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+
+        if (e.getSource() == submitBtn) {
+
+            String usn = usnField.getText().trim();
+            String name = nameField.getText().trim();
+
+            if (usn.isEmpty() || name.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "USN and Name are mandatory fields!"
+                );
+                return;
+            }
+
+            String branch = (String) branchBox.getSelectedItem();
+
+            String gender;
+            if (maleBtn.isSelected()) {
+                gender = "Male";
+            } else if (femaleBtn.isSelected()) {
+                gender = "Female";
+            } else {
+                gender = "Not specified";
+            }
+
+            StringBuilder skills = new StringBuilder();
+
+            if (javaBox.isSelected()) {
+                skills.append("Java ");
+            }
+
+            if (pythonBox.isSelected()) {
+                skills.append("Python ");
+            }
+
+            displayArea.setText(
+                    "USN     : " + usn + "\n" +
+                    "Name    : " + name + "\n" +
+                    "Branch  : " + branch + "\n" +
+                    "Gender  : " + gender + "\n" +
+                    "Skills  : " + skills.toString().trim()
+            );
+
+        } else if (e.getSource() == clearBtn) {
+
+            usnField.setText("");
+            nameField.setText("");
+            branchBox.setSelectedIndex(0);
+            genderGroup.clearSelection();
+            javaBox.setSelected(false);
+            pythonBox.setSelected(false);
+            displayArea.setText("");
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(StudentRegistration::new);
+    }
+}
