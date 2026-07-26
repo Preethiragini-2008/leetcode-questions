@@ -1,0 +1,102 @@
+import java.util.*;
+
+class Student {
+
+    int rollNo;
+    String name;
+    double percentage;
+
+    Student(int rollNo, String name, double percentage) {
+        this.rollNo = rollNo;
+        this.name = name;
+        this.percentage = percentage;
+    }
+
+    @Override
+    public String toString() {
+        return rollNo + "\t" + name + "\t" + percentage;
+    }
+}
+
+public class StudentRecord {
+
+    public static void main(String[] args) {
+
+        // ArrayList to store Student objects
+        ArrayList<Student> studentList = new ArrayList<>();
+
+        // HashMap with Roll Number as the key
+        HashMap<Integer, Student> studentMap = new HashMap<>();
+
+        // Create Student Objects
+        Student s1 = new Student(101, "Rahul", 88.5);
+        Student s2 = new Student(102, "Sneha", 91.2);
+        Student s3 = new Student(103, "Kiran", 84.8);
+
+        // Add Students to ArrayList
+        studentList.add(s1);
+        studentList.add(s2);
+        studentList.add(s3);
+
+        // Add Students to HashMap
+        studentMap.put(101, s1);
+        studentMap.put(102, s2);
+        studentMap.put(103, s3);
+
+        // Display ArrayList Records
+        System.out.println("Student Records (ArrayList)\n");
+        System.out.println("---------------------------------");
+        System.out.println("Roll\tName\tPercentage");
+        System.out.println("---------------------------------");
+
+        for (Student s : studentList) {
+            System.out.println(s);
+        }
+
+        // Search for a Student using HashMap
+        int searchRoll = 102;
+
+        System.out.println("\nSearching for Roll No : " + searchRoll);
+
+        Student found = studentMap.get(searchRoll);
+
+        if (found != null) {
+
+            System.out.println("\nRecord Found\n");
+            System.out.println("Roll No    : " + found.rollNo);
+            System.out.println("Name       : " + found.name);
+            System.out.println("Percentage : " + found.percentage);
+
+        } else {
+
+            System.out.println("Record not found.");
+        }
+
+        // Remove the First Student from ArrayList
+        studentList.remove(0);
+
+        System.out.println("\nAfter Removing First Student\n");
+        System.out.println("---------------------------------");
+        System.out.println("Roll\tName\tPercentage");
+        System.out.println("---------------------------------");
+
+        for (Student s : studentList) {
+            System.out.println(s);
+        }
+
+        // Display All HashMap Records
+        System.out.println("\nStudent Records (HashMap)\n");
+        System.out.println("---------------------------------");
+
+        for (Map.Entry<Integer, Student> entry : studentMap.entrySet()) {
+
+            Student s = entry.getValue();
+
+            System.out.println(
+                    entry.getKey() + " -> " +
+                    s.name + " (" +
+                    s.percentage + "%)"
+            );
+        }
+    }
+}
